@@ -6,14 +6,13 @@ namespace BibliotheekTests {
     [TestClass]
     public class MembershipTests {
 
-        private const int ExpectedID = 1;
-        private readonly string ExpectedValue = string.Format( Membership.CardNumberFormat, ExpectedID );
+        private const string ExpectedValue = "9999 1164 0000 0001";
 
         [TestMethod]
         public void CardNumber() {
 
             Membership membership = new Membership {
-                ID = ExpectedID,
+                ID = 1,
             };
 
             Assert.AreEqual( ExpectedValue, membership.GetCardNumber() );

@@ -13,6 +13,7 @@ namespace Bibliotheek.Interfaces {
         string NumberSuffix { get; set; }
 
         string ZipCode { get; set; }
+        public string Place { get; set; }
 
         string AddressNote { get; set; }
     }

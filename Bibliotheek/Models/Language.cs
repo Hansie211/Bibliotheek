@@ -5,5 +5,7 @@ using System.Web;
 
 namespace Bibliotheek.Models {
     public class Language : DatabaseRecord {
+
+        public string Name { get; set; }
     }
 }
