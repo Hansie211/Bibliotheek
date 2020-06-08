@@ -1,0 +1,28 @@
+Id,Name,Shape Library,Page ID,Contained By,Group,Text Area 1,Text Area 2,Text Area 3,Text Area 4,Text Area 5,Text Area 6,Text Area 7,Text Area 8,Text Area 9,Text Area 10,Text Area 11,Text Area 12,Text Area 13,Text Area 14,Text Area 15,Text Area 16,Text Area 17,Text Area 18,Text Area 19,Text Area 20,Text Area 21,Text Area 22,Text Area 23,Text Area 24,Text Area 25,Text Area 26,Text Area 27,Text Area 28,Text Area 29,Text Area 30,Text Area 31,Text Area 32,Text Area 33,Text Area 34,Text Area 35,Text Area 36,Text Area 37
+1,Page,,,,,Database ER diagram (crow's foot),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,Rectangle Container,Flowchart Shapes,1,,18,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,Text,Standard,1,2,18,Learn how to edit ERD shapes,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,Text,Standard,1,2,18,"An Entity Relationship (ER) Diagram illustrates how ""entities"" such as people, objects, or concepts relate to each other within a system. Cardinality, which is shown in crow's foot, defines the numerical attributes of the relationship between two entities or entity sets.
+
+To manually customize this ERD:
+Double-click on any text in an entity shape and add/edit text by typing.
+Add and remove entity shapes as needed.
+Add and remove lines to show relationships between entities.
+To update cardinality, click on a line and then click ""Endpoint"" on the properties bar at the top of the canvas.  
+To automatically create your own ERD:
+Click ""     Import Data"" in the Entity Relationship shape library to the left of the canvas.",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,Text,Standard,1,2,18,"Tutorials (Hold Shift + ⌘ or Ctrl, then click)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,Button,UI Mockups,1,2,18,Read about how to create entity relationship diagrams,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,User Image,User Images,1,2,18,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,Button,UI Mockups,1,2,18,Watch a tutorial on how to import  your ERD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,SVGPathBlock2,,1,2,19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,Button,UI Mockups,1,2,18,Watch a tutorial on how to export  your ERD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,Button,UI Mockups,1,2,18,Read about ERD symbols and notation,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,Button,UI Mockups,1,2,18,"See an example (Hold Shift + ⌘ or Ctrl, then click)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,Button,UI Mockups,1,2,18,Watch Lucidchart basic tutorials,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+14,Entity,Entity Relationship,1,,,Member,PK,ID,int,,FirstName,VARCHAR(255),,Affix,VARCHAR(255),,LastName,VARCHAR(255),,BirthDate,Date,,Address,,,EmailAddress,VARCHAR(255),,Telephone,VARCHAR(255),,,,,,,,,,,,
+15,Entity,Entity Relationship,1,,,Membership,PK,ID,int,FK,MemberID,int,,StartDate,Date,,EndDate,Date,,,,Key,Field,Type,Key,Field,Type,Key,Field,Type,,,,,,,,,,,,
+16,Entity,Entity Relationship,1,,,Card prefix (const),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+17,Entity,Entity Relationship,1,,,Book,PK,ID,int,Key,Author,VARCHAR(255),Key,Title,VARCHAR(255),Key,ISBN,VARCHAR(255),Key,Genre,Type,Key,Edition,Type,Key,Copies,Type,Key,Field,Type,Key,Field,Type,Key,Field,Type,Key,Field,Type,Key,Field,Type
+18,Group 1,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+19,Group 2,,1,,18,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

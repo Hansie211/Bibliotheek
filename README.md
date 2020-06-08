@@ -14,3 +14,5 @@ Meerdere bibliotheken met verschillende pools van boeken die kunnen worden geres
 Als leden een boek te laat inleveren krijgen ze een boete per boek per dag, kan worden betaald bij de balie
 Balie mag nieuwe boeken toevoegen, oude boeken afschrijven, boetes kwijtschelden of als betaald beschouwen
 Balie mag wachtwoorden resetten en heeft beperkte SQL rechten
+
+Het huren van DVDs/CDs kost extra geld
