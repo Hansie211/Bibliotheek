@@ -1,0 +1,139 @@
+// https://dbdiagram.io/d
+
+Table Members {
+  ID int [pk, increment]
+  FirstName varchar(255)
+  Affix varchar(255)
+  LastName varchar(255)
+  BirthDate date
+
+  EmailAddress varchar(255)
+  Telephone varchar(255)
+
+  Street varchar(255) 
+  Number int
+  NumberSuffix varchar(255)
+  ZipCode char(6)
+  Place varchar(255)
+  AddressNote varchar(1023)
+}
+
+Table Memberships {
+  ID int [pk, increment]
+  MemberID int [ref:- Members.ID]
+  StartDate date
+  EndDate date
+}
+
+Table Editions {
+  ID int [pk, increment]
+  LanguageID int [ref:< Languages.ID]
+  Title varchar(255)
+  ISBN varchar(255)
+  PublishDate date
+}
+
+Table Authors {
+  ID int [pk, increment]
+  FirstName varchar(255)
+  Affix varchar(255)
+  LastName varchar(255)
+}
+
+Table Publishers {
+  ID int [pk, increment]
+  Name varchar(255)
+  Location varchar(255)
+}
+
+Table Genres {
+  ID int [pk, increment]
+  Name varchar(255)
+}
+
+Table EditionAuthors {
+  EditionD int [ref:- Editions.ID]
+  AuthorID int [ref:- Authors.ID]
+}
+
+Table EditionGenres {
+  EditionID int [ref:- Editions.ID]
+  GenreID int [ref:- Genres.ID]
+}
+
+Table EditionPublishers {
+  EditionID int [ref:- Editions.ID]
+  PublisherID int [ref:- Publishers.ID]
+}
+
+Table Books {
+  ID int [pk, increment]
+  EditionID int [ref:< Editions.ID]
+  State varchar(255)
+  DateAdded date
+}
+
+Table Languages {
+  ID int [pk, increment]
+  CountryCode char(3)
+  Name varchar(255)
+}
+
+Table Libraries {
+  ID int [pk, increment]
+
+  EmailAddress varchar(255)
+  Telephone varchar(255)
+
+  Street varchar(255) 
+  Number int
+  NumberSuffix varchar(255)
+  ZipCode char(6)
+  Place varchar(255)
+  AddressNote varchar(1023)
+}
+
+Table LibraryBooks {
+  BookID int [ref:- Books.ID]
+  LibraryID int [ref:- Libraries.ID]
+}
+
+Table Employees {
+  ID int [pk, increment]
+  
+  LibraryID int [ref:- Libraries.ID]
+
+  FirstName varchar(255)
+  Affix varchar(255)
+  LastName varchar(255)
+  BirthDate date
+  
+  Street varchar(255) 
+  Number int
+  NumberSuffix varchar(255)
+  ZipCode char(6)
+  Place varchar(255)
+  AddressNote varchar(1023)
+  
+  PasswordHash varchar(255)
+  PasswordSalt varchar(48)
+}
+
+Table Fines {
+  ID int [pk, increment]
+
+  BookID int [ref:- Books.ID]
+  MemberID int [ref:- Members.ID]
+  
+  Price decimal
+}
+
+Table Reservations {
+  ID int [pk, increment]
+
+  BookID int [ref:- Books.ID]
+  MemberID int [ref:- Members.ID]
+  LibraryID int [ref:- Libraries.ID]
+  
+  Date date
+}
