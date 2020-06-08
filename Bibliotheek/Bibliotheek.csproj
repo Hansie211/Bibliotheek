@@ -67,9 +67,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAddress.cs" />
+    <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\DatabaseRecord.cs" />
+    <Compile Include="Models\Edition.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Fine.cs" />
+    <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\Language.cs" />
+    <Compile Include="Models\Library.cs" />
+    <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\Membership.cs" />
+    <Compile Include="Models\Publisher.cs" />
+    <Compile Include="Models\Reservation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +96,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
