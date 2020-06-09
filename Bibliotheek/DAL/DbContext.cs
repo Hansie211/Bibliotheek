@@ -12,7 +12,7 @@ using System.Web.DynamicData;
 
 namespace Bibliotheek.DAL {
 
-    public class DbContext : IDisposable {
+    public partial class DbContext : IDisposable {
 
         private static readonly string AssemblyDirectory    = Path.GetDirectoryName( new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath );
         private static readonly string DatabaseFileLocation = Path.GetFullPath( Path.Combine( AssemblyDirectory, @"..\App_Data\MainDatabase.mdf") );
