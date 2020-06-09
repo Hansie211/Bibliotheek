@@ -1,35 +1,46 @@
 ﻿CREATE PROCEDURE CreateMember 
-    @FirstName varchar(255), @Affix varchar(255), @LastName varchar(255), @BirthDate date, @EmailAddress varchar(255), @Telephone varchar(255), @Street varchar(255), 
-    @Number int, @NumberSuffix varchar(255), @ZipCode char(6), @Place varchar(255), @AddressNote varchar(1023), @ID int OUTPUT
+    @MemberFirstName varchar(255), @MemberAffix varchar(255), @MemberLastName varchar(255), @MemberBirthDate date, @MemberEmailAddress varchar(255), @MemberTelephone varchar(255), @MemberStreet varchar(255), 
+    @MemberNumber int, @MemberNumberSuffix varchar(255), @MemberZipCode char(6), @MemberPlace varchar(255), @MemberAddressNote varchar(1023), @MemberID int OUTPUT
 AS
 INSERT INTO Members ( FirstName, Affix, LastName, BirthDate, EmailAddress, Telephone, Street, Number, NumberSuffix, ZipCode, Place, AddressNote )
-VALUES ( @FirstName, @Affix, @LastName, @BirthDate, @EmailAddress, @Telephone, @Street, @Number, @NumberSuffix, @ZipCode, @Place, @AddressNote )
-SET @ID = SCOPE_IDENTITY()
-RETURN  @ID
+VALUES ( @MemberFirstName, @MemberAffix, @MemberLastName, @MemberBirthDate, @MemberEmailAddress, @MemberTelephone, @MemberStreet, @MemberNumber, @MemberNumberSuffix, @MemberZipCode, @MemberPlace, @MemberAddressNote )
+SET @MemberID = SCOPE_IDENTITY()
+RETURN  @MemberID
 GO
 
+
 CREATE PROCEDURE UpdateMember 
-    @ID int, @FirstName varchar(255), @Affix varchar(255), @LastName varchar(255), @BirthDate date, @EmailAddress varchar(255), @Telephone varchar(255), @Street varchar(255), 
-    @Number int, @NumberSuffix varchar(255), @ZipCode char(6), @Place varchar(255), @AddressNote varchar(1023)
+    @MemberID int, @MemberFirstName varchar(255), @MemberAffix varchar(255), @MemberLastName varchar(255), @MemberBirthDate date, @MemberEmailAddress varchar(255), @MemberTelephone varchar(255), @MemberStreet varchar(255), 
+    @MemberNumber int, @MemberNumberSuffix varchar(255), @MemberZipCode char(6), @MemberPlace varchar(255), @MemberAddressNote varchar(1023)
 AS
 UPDATE Members SET 
-    FirstName = @FirstName, Affix = @Affix, LastName = @LastName, BirthDate = @BirthDate, EmailAddress = @EmailAddress, 
-    Telephone = @Telephone, Street = @Street, Number = @Number, NumberSuffix = @NumberSuffix, ZipCode = @ZipCode, Place = @Place, 
-    AddressNote = @AddressNote
-WHERE ID = @ID
+    FirstName = @MemberFirstName, Affix = @MemberAffix, LastName = @MemberLastName, BirthDate = @MemberBirthDate, EmailAddress = @MemberEmailAddress, 
+    Telephone = @MemberTelephone, Street = @MemberStreet, Number = @MemberNumber, NumberSuffix = @MemberNumberSuffix, ZipCode = @MemberZipCode, Place = @MemberPlace, 
+    AddressNote = @MemberAddressNote
+WHERE ID = @MemberID
 GO
 
 CREATE PROCEDURE GetMember
-    @ID int, @FirstName varchar(255) OUTPUT, @Affix varchar(255) OUTPUT, @LastName varchar(255) OUTPUT, @BirthDate date OUTPUT, 
-    @EmailAddress varchar(255) OUTPUT, @Telephone varchar(255) OUTPUT, @Street varchar(255) OUTPUT, @Number int OUTPUT, 
-    @NumberSuffix varchar(255) OUTPUT, @ZipCode char(6) OUTPUT, @Place varchar(255) OUTPUT, @AddressNote varchar(1023) OUTPUT,
+    @MemberID int, @MemberFirstName varchar(255) OUTPUT, @MemberAffix varchar(255) OUTPUT, @MemberLastName varchar(255) OUTPUT, @MemberBirthDate date OUTPUT, 
+    @MemberEmailAddress varchar(255) OUTPUT, @MemberTelephone varchar(255) OUTPUT, @MemberStreet varchar(255) OUTPUT, @MemberNumber int OUTPUT, 
+    @MemberNumberSuffix varchar(255) OUTPUT, @MemberZipCode char(6) OUTPUT, @MemberPlace varchar(255) OUTPUT, @MemberAddressNote varchar(1023) OUTPUT,
     @MembershipID int OUTPUT, @MembershipStartDate date OUTPUT, @MembershipEndDate date OUTPUT
 AS
-SELECT TOP 1 @FirstName = Member.FirstName, @Affix = Member.Affix, @LastName = Member.LastName, @BirthDate = Member.BirthDate, 
-    @EmailAddress = Member.EmailAddress, @Telephone = Member.Telephone, @Street = Member.Street, @Number = Member.Number, 
-    @NumberSuffix = Member.NumberSuffix, @ZipCode = Member.ZipCode, @Place = Member.Place, @AddressNote = Member.AddressNote,
+SELECT TOP 1 @MemberFirstName = Member.FirstName, @MemberAffix = Member.Affix, @MemberLastName = Member.LastName, @MemberBirthDate = Member.BirthDate, 
+    @MemberEmailAddress = Member.EmailAddress, @MemberTelephone = Member.Telephone, @MemberStreet = Member.Street, @MemberNumber = Member.Number, 
+    @MemberNumberSuffix = Member.NumberSuffix, @MemberZipCode = Member.ZipCode, @MemberPlace = Member.Place, @MemberAddressNote = Member.AddressNote,
     @MembershipID = Membership.ID, @MembershipStartDate = Membership.StartDate, @MembershipEndDate = Membership.EndDate
 FROM Members as Member
 LEFT JOIN Memberships as Membership ON Membership.MemberID = Member.ID
 WHERE
-(@ID = Member.ID)
+(@MemberID = Member.ID)
+GO
+
+CREATE PROCEDURE DeleteMember
+    @MemberID int
+AS
+DELETE 
+FROM Members 
+WHERE
+@MemberID = ID
+GO

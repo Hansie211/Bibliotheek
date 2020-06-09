@@ -62,7 +62,7 @@ namespace Bibliotheek.DAL {
             GetFieldAttribute<Member>( o => o.AddressNote );
 
             // Add the parameters
-            //command.Parameters.AddWithValue( o => o.FirstName );
+            command.Parameters.AddWithValue( "@FirstName", member.FirstName );
             command.Parameters.AddWithValue( "@Affix", member.Affix );
             command.Parameters.AddWithValue( "@LastName", member.LastName );
             command.Parameters.AddWithValue( "@BirthDate", member.BirthDate );
@@ -97,22 +97,6 @@ namespace Bibliotheek.DAL {
 
         public Member GetMember( int Id ) {
 
-            // Without join:
-            // $"FROM {GetTableName<Member>()} as Member," + " " +
-            // $"{GetTableName<Membership>()} as Membership" + " " +
-            // $"WHERE" + " " +
-            // $"(@ID = Member.ID) AND (Membership.MemberID = Member.ID)"
-            //
-
-            //string query = $"SELECT TOP 1" + " " +
-            //    $"Member.ID, Member.FirstName, Member.Affix, Member.LastName, Member.BirthDate, Member.EmailAddress, Member.Telephone, Member.Street, Member.Number, Member.NumberSuffix, Member.ZipCode, Member.Place, Member.AddressNote," + " " +
-            //    $"Membership.ID as MembershipID, Membership.StartDate as MembershipStartDate, Membership.EndDate as MembershipEndDate" + " " +
-            //    $"FROM {GetTableName<Member>()} as Member" + " " +
-            //    $"LEFT JOIN {GetTableName<Membership>()} as Membership ON Membership.MemberID = Member.ID" + " " +
-            //    $"WHERE" + " " +
-            //    $"(@ID = Member.ID)"
-            //    ;
-
             SqlCommand command = Connection.CreateCommand();
 
             command.CommandType = CommandType.StoredProcedure;
@@ -133,9 +117,9 @@ namespace Bibliotheek.DAL {
             command.Parameters.Add<Member>( o => o.Place, ParameterDirection.Output );
             command.Parameters.Add<Member>( o => o.AddressNote, ParameterDirection.Output );
 
-            command.Parameters.AddWithPrefix<Membership>( o => o.ID, ParameterDirection.Output );
-            command.Parameters.AddWithPrefix<Membership>( o => o.StartDate, ParameterDirection.Output );
-            command.Parameters.AddWithPrefix<Membership>( o => o.EndDate, ParameterDirection.Output );
+            command.Parameters.Add<Membership>( o => o.ID, ParameterDirection.Output );
+            command.Parameters.Add<Membership>( o => o.StartDate, ParameterDirection.Output );
+            command.Parameters.Add<Membership>( o => o.EndDate, ParameterDirection.Output );
 
             Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
@@ -155,12 +139,12 @@ namespace Bibliotheek.DAL {
             command.Parameters.StoreReturnValue( member, o => o.Place );
             command.Parameters.StoreReturnValue( member, o => o.AddressNote );
 
-            if ( command.Parameters.HasReturnValueWithPrefix<Membership>( o => o.ID ) ) {
+            if ( command.Parameters.HasReturnValue<Membership>( o => o.ID ) ) {
 
                 member.Membership = new Membership();
-                command.Parameters.StoreReturnValueWithPrefix( member.Membership, o => o.ID );
-                command.Parameters.StoreReturnValueWithPrefix( member.Membership, o => o.StartDate );
-                command.Parameters.StoreReturnValueWithPrefix( member.Membership, o => o.EndDate );
+                command.Parameters.StoreReturnValue( member.Membership, o => o.ID );
+                command.Parameters.StoreReturnValue( member.Membership, o => o.StartDate );
+                command.Parameters.StoreReturnValue( member.Membership, o => o.EndDate );
             }
 
             return member;

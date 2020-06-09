@@ -1,4 +1,5 @@
 ﻿using Bibliotheek.DAL;
+using Bibliotheek.Extensions;
 using Bibliotheek.Models;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,9 @@ namespace Bibliotheek {
                     StartDate = DateTime.Now,
                 };
 
-                //context.CreateMember( member );
+                string c = DatabaseRecordExtensions.CreateInsertProcedure<Member>();
+
+                context.CreateMember( member );
                 //context.CreateMembership( member, membership );
 
                 var x = DbContext.GetFieldAttribute<Member>( o => o.AddressNote );
