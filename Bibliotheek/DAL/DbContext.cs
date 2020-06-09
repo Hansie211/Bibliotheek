@@ -141,23 +141,27 @@ namespace Bibliotheek.DAL {
 
             command.ExecuteNonQuery();
 
-            command.Parameters.Testc<Member, int>( o => o.ID );
+            Member member = new Member();
+            command.Parameters.StoreReturnValue( member, o => o.ID );
+            command.Parameters.StoreReturnValue( member, o => o.FirstName );
+            command.Parameters.StoreReturnValue( member, o => o.LastName );
+            command.Parameters.StoreReturnValue( member, o => o.BirthDate );
+            command.Parameters.StoreReturnValue( member, o => o.EmailAddress );
+            command.Parameters.StoreReturnValue( member, o => o.Telephone );
+            command.Parameters.StoreReturnValue( member, o => o.Street );
+            command.Parameters.StoreReturnValue( member, o => o.Number );
+            command.Parameters.StoreReturnValue( member, o => o.NumberSuffix );
+            command.Parameters.StoreReturnValue( member, o => o.ZipCode );
+            command.Parameters.StoreReturnValue( member, o => o.Place );
+            command.Parameters.StoreReturnValue( member, o => o.AddressNote );
 
-            Member member = new Member(){
-                ID              = (int)command.Parameters[ "@ID" ].Value,
-                FirstName       = (string)command.Parameters[ "@FirstName" ].Value,
-                Affix           = (string)command.Parameters[ "@Affix" ].Value,
-                LastName        = (string)command.Parameters[ "@LastName" ].Value,
-                BirthDate       = (DateTime)command.Parameters[ "@BirthDate" ].Value,
-                EmailAddress    = (string)command.Parameters[ "@EmailAddress" ].Value,
-                Telephone       = (string)command.Parameters[ "@Telephone" ].Value,
-                Street          = (string)command.Parameters[ "@Street" ].Value,
-                Number          = (int)command.Parameters[ "@Number" ].Value,
-                NumberSuffix    = (string)command.Parameters[ "@NumberSuffix" ].Value,
-                ZipCode         = (string)command.Parameters[ "@ZipCode" ].Value,
-                Place           = (string)command.Parameters[ "@Place" ].Value,
-                AddressNote     = (string)command.Parameters[ "@AddressNote" ].Value,
-            };
+            if ( command.Parameters.HasReturnValueWithPrefix<Membership>( o => o.ID ) ) {
+
+                member.Membership = new Membership();
+                command.Parameters.StoreReturnValueWithPrefix( member.Membership, o => o.ID );
+                command.Parameters.StoreReturnValueWithPrefix( member.Membership, o => o.StartDate );
+                command.Parameters.StoreReturnValueWithPrefix( member.Membership, o => o.EndDate );
+            }
 
             return member;
         }
