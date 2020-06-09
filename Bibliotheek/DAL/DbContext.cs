@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Web;
 using System.Web.DynamicData;
@@ -33,10 +34,17 @@ namespace Bibliotheek.DAL {
             Connection.Open();
         }
 
-        private string GetTableName<T>() {
+        private static string GetTableName<T>() {
 
             var attribute = typeof(T).GetCustomAttributes( typeof(TableNameAttribute), false ).FirstOrDefault() as TableNameAttribute;
             return attribute?.Name;
+        }
+
+        private static void GetAttr<T>( Expression<Func<T>> expr ) {
+
+            var propertyInfo = ((MemberExpression)expr.Body).Member as PropertyInfo;
+
+            // return null;
         }
 
         public bool CreateMember( Member member ) {
@@ -48,8 +56,10 @@ namespace Bibliotheek.DAL {
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "CreateMember";
 
+            GetAttr<Member>( o => o.AddressNote );
+
             // Add the parameters
-            command.Parameters.AddWithValue( "@FirstName", member.FirstName );
+            command.Parameters.AddWithValue( o => o.FirstName );
             command.Parameters.AddWithValue( "@Affix", member.Affix );
             command.Parameters.AddWithValue( "@LastName", member.LastName );
             command.Parameters.AddWithValue( "@BirthDate", member.BirthDate );
@@ -91,69 +101,60 @@ namespace Bibliotheek.DAL {
             // $"(@ID = Member.ID) AND (Membership.MemberID = Member.ID)"
             //
 
-            string query = $"SELECT TOP 1" + " " +
-                $"Member.ID, Member.FirstName, Member.Affix, Member.LastName, Member.BirthDate, Member.EmailAddress, Member.Telephone, Member.Street, Member.Number, Member.NumberSuffix, Member.ZipCode, Member.Place, Member.AddressNote," + " " +
-                $"Membership.ID as MembershipID, Membership.StartDate as MembershipStartDate, Membership.EndDate as MembershipEndDate" + " " +
-                $"FROM {GetTableName<Member>()} as Member" + " " +
-                $"LEFT JOIN {GetTableName<Membership>()} as Membership ON Membership.MemberID = Member.ID" + " " +
-                $"WHERE" + " " +
-                $"(@ID = Member.ID)"
-                ;
+            //string query = $"SELECT TOP 1" + " " +
+            //    $"Member.ID, Member.FirstName, Member.Affix, Member.LastName, Member.BirthDate, Member.EmailAddress, Member.Telephone, Member.Street, Member.Number, Member.NumberSuffix, Member.ZipCode, Member.Place, Member.AddressNote," + " " +
+            //    $"Membership.ID as MembershipID, Membership.StartDate as MembershipStartDate, Membership.EndDate as MembershipEndDate" + " " +
+            //    $"FROM {GetTableName<Member>()} as Member" + " " +
+            //    $"LEFT JOIN {GetTableName<Membership>()} as Membership ON Membership.MemberID = Member.ID" + " " +
+            //    $"WHERE" + " " +
+            //    $"(@ID = Member.ID)"
+            //    ;
 
-            SqlCommand command = new SqlCommand(query, Connection);
+            SqlCommand command = Connection.CreateCommand();
+
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "GetMember";
+
             command.Parameters.AddWithValue( "@ID", Id );
+
+            command.Parameters.Add( "@FirstName", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@Affix", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@LastName", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@BirthDate", SqlDbType.Date ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@EmailAddress", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@Telephone", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@Street", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@Number", SqlDbType.Int ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@NumberSuffix", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@ZipCode", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@Place", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@AddressNote", SqlDbType.VarChar, 1023 ).Direction = ParameterDirection.Output;
+
+            command.Parameters.Add( "@MembershipID", SqlDbType.Int ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@MembershipStartDate", SqlDbType.Date ).Direction = ParameterDirection.Output;
+            command.Parameters.Add( "@MembershipEndDate", SqlDbType.Date ).Direction = ParameterDirection.Output;
 
             Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
-            using ( SqlDataReader reader = command.ExecuteReader() ) {
+            command.ExecuteNonQuery();
 
-                Member member = new Member();
+            Member member = new Member(){
+                ID              = (int)command.Parameters[ "@ID" ].Value,
+                FirstName       = (string)command.Parameters[ "@FirstName" ].Value,
+                Affix           = (string)command.Parameters[ "@Affix" ].Value,
+                LastName        = (string)command.Parameters[ "@LastName" ].Value,
+                BirthDate       = (DateTime)command.Parameters[ "@BirthDate" ].Value,
+                EmailAddress    = (string)command.Parameters[ "@EmailAddress" ].Value,
+                Telephone       = (string)command.Parameters[ "@Telephone" ].Value,
+                Street          = (string)command.Parameters[ "@Street" ].Value,
+                Number          = (int)command.Parameters[ "@Number" ].Value,
+                NumberSuffix    = (string)command.Parameters[ "@NumberSuffix" ].Value,
+                ZipCode         = (string)command.Parameters[ "@ZipCode" ].Value,
+                Place           = (string)command.Parameters[ "@Place" ].Value,
+                AddressNote     = (string)command.Parameters[ "@AddressNote" ].Value,
+            };
 
-                try {
-
-                    //for ( int i = 0; i < reader.FieldCount; i++ ) {
-                    //    Debug.WriteLine( reader.GetName( i ).ToString() );
-                    //    Debug.WriteLine( reader.GetFieldType( i ).ToString() );
-                    //    Debug.WriteLine( reader.GetDataTypeName( i ).ToString() );
-                    //}
-
-                    while ( reader.Read() ) {
-
-                        member.ID           = (int)reader[ "ID" ];
-                        member.FirstName    = (string)reader[ "FirstName" ];
-                        member.Affix        = (string)reader[ "Affix" ];
-                        member.LastName     = (string)reader[ "LastName" ];
-                        member.BirthDate    = (DateTime)reader[ "BirthDate" ];
-                        member.EmailAddress = (string)reader[ "EmailAddress" ];
-                        member.Telephone    = (string)reader[ "Telephone" ];
-                        member.Street       = (string)reader[ "Street" ];
-                        member.Number       = (int)reader[ "Number" ];
-                        member.NumberSuffix = (string)reader[ "NumberSuffix" ];
-                        member.ZipCode      = (string)reader[ "ZipCode" ];
-                        member.Place        = (string)reader[ "Place" ];
-                        member.AddressNote  = (string)reader[ "AddressNote" ];
-
-                        if ( reader[ "MembershipID" ] is DBNull ) {
-
-                            member.Membership = null;
-                        } else {
-
-                            member.Membership = new Membership() {
-                                ID          = (int)reader[ "MembershipID" ],
-                                StartDate   = (DateTime)reader[ "MembershipStartDate" ],
-                                EndDate     = (DateTime)reader[ "MembershipEndDate" ],
-                            };
-                        }
-
-                        return member;
-                    }
-
-                } finally {
-                    reader.Close();
-                }
-            }
-
-            return null;
+            return member;
         }
 
         // public bool UpdateMember()

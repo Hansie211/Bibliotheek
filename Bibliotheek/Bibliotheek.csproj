@@ -76,6 +76,7 @@
     <Content Include="HomePage.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FieldAttribute.cs" />
     <Compile Include="DAL\DbContext.Members.cs" />
     <Compile Include="DAL\DbContext.cs" />
     <Compile Include="Interfaces\IAddress.cs" />
