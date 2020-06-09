@@ -1,4 +1,6 @@
-﻿using Bibliotheek.Models;
+﻿using Bibliotheek.Attributes;
+using Bibliotheek.Models;
+using Bibliotheek.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -40,11 +42,12 @@ namespace Bibliotheek.DAL {
             return attribute?.Name;
         }
 
-        private static void GetAttr<T>( Expression<Func<T>> expr ) {
+        public static FieldAttribute GetFieldAttribute<T>( Expression<Func<T, object>> expr ) {
 
-            var propertyInfo = ((MemberExpression)expr.Body).Member as PropertyInfo;
+            var prop = ((MemberExpression)expr.Body).Member as PropertyInfo;
+            IEnumerable<FieldAttribute> attrs = prop.GetCustomAttributes<FieldAttribute>( true );
 
-            // return null;
+            return attrs.FirstOrDefault();
         }
 
         public bool CreateMember( Member member ) {
@@ -56,10 +59,10 @@ namespace Bibliotheek.DAL {
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "CreateMember";
 
-            GetAttr<Member>( o => o.AddressNote );
+            GetFieldAttribute<Member>( o => o.AddressNote );
 
             // Add the parameters
-            command.Parameters.AddWithValue( o => o.FirstName );
+            //command.Parameters.AddWithValue( o => o.FirstName );
             command.Parameters.AddWithValue( "@Affix", member.Affix );
             command.Parameters.AddWithValue( "@LastName", member.LastName );
             command.Parameters.AddWithValue( "@BirthDate", member.BirthDate );
@@ -117,26 +120,28 @@ namespace Bibliotheek.DAL {
 
             command.Parameters.AddWithValue( "@ID", Id );
 
-            command.Parameters.Add( "@FirstName", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@Affix", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@LastName", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@BirthDate", SqlDbType.Date ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@EmailAddress", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@Telephone", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@Street", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@Number", SqlDbType.Int ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@NumberSuffix", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@ZipCode", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@Place", SqlDbType.VarChar, 255 ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@AddressNote", SqlDbType.VarChar, 1023 ).Direction = ParameterDirection.Output;
+            command.Parameters.Add<Member>( o => o.FirstName, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.Affix, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.LastName, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.BirthDate, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.EmailAddress, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.Telephone, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.Street, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.Number, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.NumberSuffix, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.ZipCode, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.Place, ParameterDirection.Output );
+            command.Parameters.Add<Member>( o => o.AddressNote, ParameterDirection.Output );
 
-            command.Parameters.Add( "@MembershipID", SqlDbType.Int ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@MembershipStartDate", SqlDbType.Date ).Direction = ParameterDirection.Output;
-            command.Parameters.Add( "@MembershipEndDate", SqlDbType.Date ).Direction = ParameterDirection.Output;
+            command.Parameters.AddWithPrefix<Membership>( o => o.ID, ParameterDirection.Output );
+            command.Parameters.AddWithPrefix<Membership>( o => o.StartDate, ParameterDirection.Output );
+            command.Parameters.AddWithPrefix<Membership>( o => o.EndDate, ParameterDirection.Output );
 
             Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
             command.ExecuteNonQuery();
+
+            command.Parameters.Testc<Member, int>( o => o.ID );
 
             Member member = new Member(){
                 ID              = (int)command.Parameters[ "@ID" ].Value,

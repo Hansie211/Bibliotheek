@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Bibliotheek.Attributes;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Bibliotheek.Models {
 
     public abstract class DatabaseRecord {
 
+        [Field( "ID", SqlDbType.Int )]
         public int ID { get; set; }
 
         public override bool Equals( object obj ) {

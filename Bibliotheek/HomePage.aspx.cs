@@ -40,6 +40,8 @@ namespace Bibliotheek {
                 //context.CreateMember( member );
                 //context.CreateMembership( member, membership );
 
+                var x = DbContext.GetFieldAttribute<Member>( o => o.AddressNote );
+
                 var a = context.GetMember( 1 );
                 var b = context.GetMember( 2 );
             }

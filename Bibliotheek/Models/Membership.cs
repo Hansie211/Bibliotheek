@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Bibliotheek.Attributes;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.DynamicData;
@@ -11,7 +13,9 @@ namespace Bibliotheek.Models {
 
         public static readonly string CardNumberFormat = "9999 1164 0000 {0:D4}";
 
+        [Field( "StartDate", SqlDbType.Date )]
         public DateTime StartDate { get; set; }
+        [Field( "EndDate", SqlDbType.Date )]
         public DateTime EndDate { get; set; }
 
         public string GetCardNumber() {

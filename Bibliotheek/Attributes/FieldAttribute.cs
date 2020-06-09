@@ -15,15 +15,11 @@ namespace Bibliotheek.Attributes {
         private int GetDefaultSize( SqlDbType dbType ) {
 
             switch ( dbType ) {
-                case SqlDbType.Int:
-                    return 4;
                 case SqlDbType.VarChar:
                     return 255;
-                case SqlDbType.Date:
-                    return 3;
             }
 
-            return 4;
+            return 0;
         }
 
         public FieldAttribute( string fieldName, SqlDbType dbType, int size = 0 ) {
