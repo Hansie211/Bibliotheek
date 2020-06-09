@@ -10,7 +10,7 @@
 namespace Bibliotheek {
 
 
-    public partial class WebForm {
+    public partial class HomePage {
 
         /// <summary>
         /// form1 control.

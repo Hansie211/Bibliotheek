@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -40,11 +41,14 @@ namespace Bibliotheek.DAL {
 
         public bool CreateMember( Member member ) {
 
+            // Create the command
             SqlCommand command = Connection.CreateCommand();
 
+            // Set the command properties
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "CreateMember";
 
+            // Add the parameters
             command.Parameters.AddWithValue( "@FirstName", member.FirstName );
             command.Parameters.AddWithValue( "@Affix", member.Affix );
             command.Parameters.AddWithValue( "@LastName", member.LastName );
@@ -58,20 +62,19 @@ namespace Bibliotheek.DAL {
             command.Parameters.AddWithValue( "@Place", member.Place );
             command.Parameters.AddWithValue( "@AddressNote", member.AddressNote );
 
-            // return value
+            // Add the return value
             command.Parameters.Add( "@ID", SqlDbType.Int ).Direction = ParameterDirection.Output;
 
-            Console.WriteLine( $"Execute '{command.CommandText}'." );
+            Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
             try {
 
                 command.ExecuteNonQuery();
-
                 member.ID = (int)command.Parameters[ "@id" ].Value;
             } catch ( Exception exp ) {
 
-                Console.WriteLine( "!!ERROR!!" );
-                Console.WriteLine( exp.ToString() );
+                Debug.WriteLine( "!!ERROR!!" );
+                Debug.WriteLine( exp.ToString() );
 
                 return false;
             }
@@ -81,22 +84,73 @@ namespace Bibliotheek.DAL {
 
         public Member GetMember( int Id ) {
 
-            string query = $"SELECT" + " " +
+            // Without join:
+            // $"FROM {GetTableName<Member>()} as Member," + " " +
+            // $"{GetTableName<Membership>()} as Membership" + " " +
+            // $"WHERE" + " " +
+            // $"(@ID = Member.ID) AND (Membership.MemberID = Member.ID)"
+            //
+
+            string query = $"SELECT TOP 1" + " " +
                 $"Member.ID, Member.FirstName, Member.Affix, Member.LastName, Member.BirthDate, Member.EmailAddress, Member.Telephone, Member.Street, Member.Number, Member.NumberSuffix, Member.ZipCode, Member.Place, Member.AddressNote," + " " +
-                $"Membership.ID, Membership.StartDate, Membership.EndDate" + " " +
-                $"FROM {GetTableName<Member>()} Member" + " " +
-                $"LEFT JOIN {GetTableName<Membership>()} Membership ON Membership.MemberID=Member.ID" + " " +
+                $"Membership.ID as MembershipID, Membership.StartDate as MembershipStartDate, Membership.EndDate as MembershipEndDate" + " " +
+                $"FROM {GetTableName<Member>()} as Member" + " " +
+                $"LEFT JOIN {GetTableName<Membership>()} as Membership ON Membership.MemberID = Member.ID" + " " +
                 $"WHERE" + " " +
-                $"(@ID = Member.ID)";
+                $"(@ID = Member.ID)"
+                ;
 
             SqlCommand command = new SqlCommand(query, Connection);
             command.Parameters.AddWithValue( "@ID", Id );
 
-            Console.WriteLine( $"Execute '{command.CommandText}'." );
+            Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
             using ( SqlDataReader reader = command.ExecuteReader() ) {
-                // iterate your results here
-                Console.WriteLine( String.Format( "{0}", reader[ "id" ] ) );
+
+                Member member = new Member();
+
+                try {
+
+                    //for ( int i = 0; i < reader.FieldCount; i++ ) {
+                    //    Debug.WriteLine( reader.GetName( i ).ToString() );
+                    //    Debug.WriteLine( reader.GetFieldType( i ).ToString() );
+                    //    Debug.WriteLine( reader.GetDataTypeName( i ).ToString() );
+                    //}
+
+                    while ( reader.Read() ) {
+
+                        member.ID           = (int)reader[ "ID" ];
+                        member.FirstName    = (string)reader[ "FirstName" ];
+                        member.Affix        = (string)reader[ "Affix" ];
+                        member.LastName     = (string)reader[ "LastName" ];
+                        member.BirthDate    = (DateTime)reader[ "BirthDate" ];
+                        member.EmailAddress = (string)reader[ "EmailAddress" ];
+                        member.Telephone    = (string)reader[ "Telephone" ];
+                        member.Street       = (string)reader[ "Street" ];
+                        member.Number       = (int)reader[ "Number" ];
+                        member.NumberSuffix = (string)reader[ "NumberSuffix" ];
+                        member.ZipCode      = (string)reader[ "ZipCode" ];
+                        member.Place        = (string)reader[ "Place" ];
+                        member.AddressNote  = (string)reader[ "AddressNote" ];
+
+                        if ( reader[ "MembershipID" ] is DBNull ) {
+
+                            member.Membership = null;
+                        } else {
+
+                            member.Membership = new Membership() {
+                                ID          = (int)reader[ "MembershipID" ],
+                                StartDate   = (DateTime)reader[ "MembershipStartDate" ],
+                                EndDate     = (DateTime)reader[ "MembershipEndDate" ],
+                            };
+                        }
+
+                        return member;
+                    }
+
+                } finally {
+                    reader.Close();
+                }
             }
 
             return null;
@@ -117,15 +171,15 @@ namespace Bibliotheek.DAL {
             command.Parameters.AddWithValue( "@EndDate", membership.EndDate );
             command.Parameters.AddWithValue( "@MemberID", owner.ID );
 
-            Console.WriteLine( $"Execute '{command.CommandText}'." );
+            Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
             try {
 
                 membership.ID = (int)command.ExecuteScalar();
             } catch ( Exception exp ) {
 
-                Console.WriteLine( "!!ERROR!!" );
-                Console.WriteLine( exp.ToString() );
+                Debug.WriteLine( "!!ERROR!!" );
+                Debug.WriteLine( exp.ToString() );
 
                 return false;
             }
