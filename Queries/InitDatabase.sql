@@ -1,17 +1,17 @@
 ﻿CREATE TABLE [Members] (
   [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
   [FirstName] varchar(255) NOT NULL,
-  [Affix] varchar(255) NOT NULL,
+  [Affix] varchar(255),
   [LastName] varchar(255) NOT NULL,
   [BirthDate] date NOT NULL,
   [EmailAddress] varchar(255) NOT NULL,
   [Telephone] varchar(255) NOT NULL,
   [Street] varchar(255) NOT NULL,
   [Number] int NOT NULL,
-  [NumberSuffix] varchar(255) NOT NULL,
+  [NumberSuffix] varchar(255),
   [ZipCode] char(6) NOT NULL,
   [Place] varchar(255) NOT NULL,
-  [AddressNote] varchar(1023) NOT NULL,
+  [AddressNote] varchar(1023),
 )
 GO
 
@@ -35,7 +35,7 @@ GO
 CREATE TABLE [Authors] (
   [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
   [FirstName] varchar(255) NOT NULL,
-  [Affix] varchar(255) NOT NULL,
+  [Affix] varchar(255),
   [LastName] varchar(255) NOT NULL,
 )
 GO
@@ -92,10 +92,10 @@ CREATE TABLE [Libraries] (
   [Telephone] varchar(255) NOT NULL,
   [Street] varchar(255) NOT NULL,
   [Number] int NOT NULL,
-  [NumberSuffix] varchar(255) NOT NULL,
+  [NumberSuffix] varchar(255),
   [ZipCode] char(6) NOT NULL,
   [Place] varchar(255) NOT NULL,
-  [AddressNote] varchar(1023) NOT NULL,
+  [AddressNote] varchar(1023),
 )
 GO
 
@@ -109,15 +109,15 @@ CREATE TABLE [Employees] (
   [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
   [LibraryID] int NOT NULL,
   [FirstName] varchar(255) NOT NULL,
-  [Affix] varchar(255) NOT NULL,
+  [Affix] varchar(255),
   [LastName] varchar(255) NOT NULL,
   [BirthDate] date NOT NULL,
   [Street] varchar(255) NOT NULL,
   [Number] int NOT NULL,
-  [NumberSuffix] varchar(255) NOT NULL,
+  [NumberSuffix] varchar(255),
   [ZipCode] char(6) NOT NULL,
   [Place] varchar(255) NOT NULL,
-  [AddressNote] varchar(1023) NOT NULL,
+  [AddressNote] varchar(1023),
   [PasswordHash] varchar(255) NOT NULL,
   [PasswordSalt] varchar(48) NOT NULL,
 )

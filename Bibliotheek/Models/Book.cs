@@ -16,7 +16,7 @@ namespace Bibliotheek.Models {
 
         [Field( "State", SqlDbType.VarChar )]
         public string State { get; set; }
-        [Field( "AddedAt", SqlDbType.Date )]
+        [Field( "DateAdded", SqlDbType.Date )]
         public DateTime AddedAt { get; set; }
 
         [Field( "InInventory", SqlDbType.Bit )]

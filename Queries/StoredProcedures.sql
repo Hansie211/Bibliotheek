@@ -44,37 +44,37 @@ GO
 
 
 CREATE OR ALTER PROCEDURE CreateBook
-@BookEditionID int, @BookState varchar(255), @BookAddedAt date, @BookInInventory bit, @BookID int OUTPUT
+@BookEditionID int, @BookState varchar(255), @BookDateAdded date, @BookInInventory bit, @BookID int OUTPUT
 AS
-INSERT INTO Books ( EditionID, State, AddedAt, InInventory )
-VALUES ( @BookEditionID, @BookState, @BookAddedAt, @BookInInventory)
+INSERT INTO Books ( EditionID, State, DateAdded, InInventory )
+VALUES ( @BookEditionID, @BookState, @BookDateAdded, @BookInInventory)
 SET @BookID = SCOPE_IDENTITY()
 RETURN  @BookID
 GO
 
 CREATE OR ALTER PROCEDURE GetBook
-@BookID int, @BookEditionID int OUTPUT, @BookState varchar(255) OUTPUT, @BookAddedAt date OUTPUT, @BookInInventory bit OUTPUT
+@BookID int, @BookEditionID int OUTPUT, @BookState varchar(255) OUTPUT, @BookDateAdded date OUTPUT, @BookInInventory bit OUTPUT
 AS
 SELECT TOP 1
-@BookEditionID = Books.EditionID, @BookState = Books.State, @BookAddedAt = Books.AddedAt, @BookInInventory = Books.InInventory
+@BookEditionID = Books.EditionID, @BookState = Books.State, @BookDateAdded = Books.DateAdded, @BookInInventory = Books.InInventory
 FROM Books
 WHERE
 (@BookID = Books.ID)
 GO
 
 CREATE OR ALTER PROCEDURE GetAllBook
-@BookID int OUTPUT, @BookEditionID int OUTPUT, @BookState varchar(255) OUTPUT, @BookAddedAt date OUTPUT, @BookInInventory bit OUTPUT
+@BookID int OUTPUT, @BookEditionID int OUTPUT, @BookState varchar(255) OUTPUT, @BookDateAdded date OUTPUT, @BookInInventory bit OUTPUT
 AS
 SELECT
-@BookID = Books.ID, @BookEditionID = Books.EditionID, @BookState = Books.State, @BookAddedAt = Books.AddedAt, @BookInInventory = Books.InInventory
+@BookID = Books.ID, @BookEditionID = Books.EditionID, @BookState = Books.State, @BookDateAdded = Books.DateAdded, @BookInInventory = Books.InInventory
 FROM Books
 GO
 
 CREATE OR ALTER PROCEDURE UpdateBook
-@BookEditionID int, @BookState varchar(255), @BookAddedAt date, @BookInInventory bit, @BookID int
+@BookEditionID int, @BookState varchar(255), @BookDateAdded date, @BookInInventory bit, @BookID int
 AS
 UPDATE Books SET
-EditionID = @BookEditionID, State = @BookState, AddedAt = @BookAddedAt, InInventory = @BookInInventory
+EditionID = @BookEditionID, State = @BookState, DateAdded = @BookDateAdded, InInventory = @BookInInventory
 WHERE ID = @BookID
 GO
 
