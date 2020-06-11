@@ -13,6 +13,9 @@ namespace Bibliotheek.Models {
 
         public static readonly string CardNumberFormat = "9999 1164 0000 {0:D4}";
 
+        [ForeignKey( "MemberID" )]
+        public Member Member { get; set; }
+
         [Field( "StartDate", SqlDbType.Date )]
         public DateTime StartDate { get; set; }
         [Field( "EndDate", SqlDbType.Date )]

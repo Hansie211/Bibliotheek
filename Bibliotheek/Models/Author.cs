@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 
 namespace Bibliotheek.Models {
+
+    [TableName( "Authors" )]
     public class Author : DatabaseRecord, IPerson {
 
         [Field( "FirstName", SqlDbType.VarChar )]

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 
 namespace Bibliotheek.Models {
 
+    [TableName( "Libraries" )]
     public class Library : DatabaseRecord, IAddress {
-
-        public IList<Employee> Employees { get; set; }
 
         [Field( "EmailAddress", SqlDbType.VarChar )]
         public string EmailAddress { get; set; }
@@ -23,7 +23,7 @@ namespace Bibliotheek.Models {
         public int Number { get; set; }
         [Field( "NumberSuffix", SqlDbType.VarChar )]
         public string NumberSuffix { get; set; }
-        [Field( "ZipCode", SqlDbType.VarChar )]
+        [Field( "ZipCode", SqlDbType.Char, 6 )]
         public string ZipCode { get; set; }
         [Field( "Place", SqlDbType.VarChar )]
         public string Place { get; set; }

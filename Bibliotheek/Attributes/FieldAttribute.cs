@@ -6,6 +6,7 @@ using System.Web;
 
 namespace Bibliotheek.Attributes {
 
+    [AttributeUsage( AttributeTargets.Property, AllowMultiple = false )]
     public class FieldAttribute : Attribute {
 
         public string FieldName { get; set; }

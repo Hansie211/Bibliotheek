@@ -12,8 +12,6 @@ namespace Bibliotheek.Models {
     [TableName( "Members" )]
     public class Member : DatabaseRecord, IAddress, IPerson {
 
-        public Membership Membership { get; set; }
-
         [Field( "FirstName", SqlDbType.VarChar )]
         public string FirstName { get; set; }
         [Field( "Affix", SqlDbType.VarChar )]

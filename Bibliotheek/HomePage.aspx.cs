@@ -3,7 +3,11 @@ using Bibliotheek.Extensions;
 using Bibliotheek.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -24,7 +28,7 @@ namespace Bibliotheek {
                     EmailAddress = "example@example.com",
                     FirstName = "John",
                     LastName = "Doe",
-                    Membership = null,
+                    // Membership = null,
                     Number = 10,
                     NumberSuffix = string.Empty,
                     Place = "Amsterdam",
@@ -38,15 +42,33 @@ namespace Bibliotheek {
                     StartDate = DateTime.Now,
                 };
 
-                string c = DatabaseRecordExtensions.CreateInsertProcedure<Member>();
+                StringBuilder commands = new StringBuilder();
 
-                context.CreateMember( member );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Author>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Book>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Edition>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Employee>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Fine>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Genre>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Language>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Library>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Member>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Membership>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Publisher>() );
+                commands.AppendLine( DatabaseRecordExtensions.GetAllProcedures<Reservation>() );
+
+                string fileName = "StoredProcedures.sql";
+                string filePath = Path.Combine( @"X:\Bibliotheek\Queries", fileName);
+
+                File.WriteAllText( filePath, commands.ToString() );
+
+                // context.CreateMember( member );
                 //context.CreateMembership( member, membership );
 
-                var x = DbContext.GetFieldAttribute<Member>( o => o.AddressNote );
+                //var x = DbContext.GetFieldAttribute<Member>( o => o.AddressNote );
 
-                var a = context.GetMember( 1 );
-                var b = context.GetMember( 2 );
+                //var a = context.GetMember( 1 );
+                //var b = context.GetMember( 2 );
             }
         }
     }

@@ -139,13 +139,13 @@ namespace Bibliotheek.DAL {
             command.Parameters.StoreReturnValue( member, o => o.Place );
             command.Parameters.StoreReturnValue( member, o => o.AddressNote );
 
-            if ( command.Parameters.HasReturnValue<Membership>( o => o.ID ) ) {
+            //if ( command.Parameters.HasReturnValue<Membership>( o => o.ID ) ) {
 
-                member.Membership = new Membership();
-                command.Parameters.StoreReturnValue( member.Membership, o => o.ID );
-                command.Parameters.StoreReturnValue( member.Membership, o => o.StartDate );
-                command.Parameters.StoreReturnValue( member.Membership, o => o.EndDate );
-            }
+            //    member.Membership = new Membership();
+            //    command.Parameters.StoreReturnValue( member.Membership, o => o.ID );
+            //    command.Parameters.StoreReturnValue( member.Membership, o => o.StartDate );
+            //    command.Parameters.StoreReturnValue( member.Membership, o => o.EndDate );
+            //}
 
             return member;
         }
@@ -161,8 +161,8 @@ namespace Bibliotheek.DAL {
                 $"( @StartDate, @EndDate, @MemberID )";
 
             SqlCommand command = new SqlCommand(query, Connection);
-            command.Parameters.AddWithValue( "@StartDate", membership.StartDate );
-            command.Parameters.AddWithValue( "@EndDate", membership.EndDate );
+            command.Parameters.Add<Membership>( o => o.StartDate );
+            command.Parameters.Add<Membership>( o => o.EndDate );
             command.Parameters.AddWithValue( "@MemberID", owner.ID );
 
             Debug.WriteLine( $"Execute '{command.CommandText}'." );
@@ -178,7 +178,7 @@ namespace Bibliotheek.DAL {
                 return false;
             }
 
-            owner.Membership = membership;
+            // owner.Membership = membership;
 
             return true;
         }

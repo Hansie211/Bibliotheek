@@ -1,194 +1,194 @@
 ﻿CREATE TABLE [Members] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [FirstName] varchar(255),
-  [Affix] varchar(255),
-  [LastName] varchar(255),
-  [BirthDate] date,
-  [EmailAddress] varchar(255),
-  [Telephone] varchar(255),
-  [Street] varchar(255),
-  [Number] int,
-  [NumberSuffix] varchar(255),
-  [ZipCode] char(6),
-  [Place] varchar(255),
-  [AddressNote] varchar(1023)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [FirstName] varchar(255) NOT NULL,
+  [Affix] varchar(255) NOT NULL,
+  [LastName] varchar(255) NOT NULL,
+  [BirthDate] date NOT NULL,
+  [EmailAddress] varchar(255) NOT NULL,
+  [Telephone] varchar(255) NOT NULL,
+  [Street] varchar(255) NOT NULL,
+  [Number] int NOT NULL,
+  [NumberSuffix] varchar(255) NOT NULL,
+  [ZipCode] char(6) NOT NULL,
+  [Place] varchar(255) NOT NULL,
+  [AddressNote] varchar(1023) NOT NULL,
 )
 GO
 
 CREATE TABLE [Memberships] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [MemberID] int,
-  [StartDate] date,
-  [EndDate] date
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [MemberID] int NOT NULL,
+  [StartDate] date NOT NULL,
+  [EndDate] date NOT NULL,
 )
 GO
 
 CREATE TABLE [Editions] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [LanguageID] int,
-  [Title] varchar(255),
-  [ISBN] varchar(255),
-  [PublishDate] date
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [LanguageID] int NOT NULL,
+  [Title] varchar(255) NOT NULL,
+  [ISBN] varchar(255) NOT NULL,
+  [PublishDate] date NOT NULL,
 )
 GO
 
 CREATE TABLE [Authors] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [FirstName] varchar(255),
-  [Affix] varchar(255),
-  [LastName] varchar(255)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [FirstName] varchar(255) NOT NULL,
+  [Affix] varchar(255) NOT NULL,
+  [LastName] varchar(255) NOT NULL,
 )
 GO
 
 CREATE TABLE [Publishers] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [Name] varchar(255),
-  [Location] varchar(255)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [Name] varchar(255) NOT NULL,
+  [Location] varchar(255) NOT NULL,
 )
 GO
 
 CREATE TABLE [Genres] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [Name] varchar(255)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [Name] varchar(255) NOT NULL,
 )
 GO
 
 CREATE TABLE [EditionAuthors] (
-  [EditionD] int,
-  [AuthorID] int
+  [EditionD] int NOT NULL,
+  [AuthorID] int NOT NULL,
 )
 GO
 
 CREATE TABLE [EditionGenres] (
-  [EditionID] int,
-  [GenreID] int
+  [EditionID] int NOT NULL,
+  [GenreID] int NOT NULL,
 )
 GO
 
 CREATE TABLE [EditionPublishers] (
-  [EditionID] int,
-  [PublisherID] int
+  [EditionID] int NOT NULL,
+  [PublisherID] int NOT NULL,
 )
 GO
 
 CREATE TABLE [Books] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [EditionID] int,
-  [State] varchar(255),
-  [DateAdded] date,
-  [InInventory] bit
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [EditionID] int NOT NULL,
+  [State] varchar(255) NOT NULL,
+  [DateAdded] date NOT NULL,
+  [InInventory] bit NOT NULL,
 )
 GO
 
 CREATE TABLE [Languages] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [Name] varchar(255)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [Name] varchar(255) NOT NULL,
 )
 GO
 
 CREATE TABLE [Libraries] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [EmailAddress] varchar(255),
-  [Telephone] varchar(255),
-  [Street] varchar(255),
-  [Number] int,
-  [NumberSuffix] varchar(255),
-  [ZipCode] char(6),
-  [Place] varchar(255),
-  [AddressNote] varchar(1023)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [EmailAddress] varchar(255) NOT NULL,
+  [Telephone] varchar(255) NOT NULL,
+  [Street] varchar(255) NOT NULL,
+  [Number] int NOT NULL,
+  [NumberSuffix] varchar(255) NOT NULL,
+  [ZipCode] char(6) NOT NULL,
+  [Place] varchar(255) NOT NULL,
+  [AddressNote] varchar(1023) NOT NULL,
 )
 GO
 
 CREATE TABLE [LibraryBooks] (
-  [BookID] int,
-  [LibraryID] int
+  [BookID] int NOT NULL,
+  [LibraryID] int NOT NULL,
 )
 GO
 
 CREATE TABLE [Employees] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [LibraryID] int,
-  [FirstName] varchar(255),
-  [Affix] varchar(255),
-  [LastName] varchar(255),
-  [BirthDate] date,
-  [Street] varchar(255),
-  [Number] int,
-  [NumberSuffix] varchar(255),
-  [ZipCode] char(6),
-  [Place] varchar(255),
-  [AddressNote] varchar(1023),
-  [PasswordHash] varchar(255),
-  [PasswordSalt] varchar(48)
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [LibraryID] int NOT NULL,
+  [FirstName] varchar(255) NOT NULL,
+  [Affix] varchar(255) NOT NULL,
+  [LastName] varchar(255) NOT NULL,
+  [BirthDate] date NOT NULL,
+  [Street] varchar(255) NOT NULL,
+  [Number] int NOT NULL,
+  [NumberSuffix] varchar(255) NOT NULL,
+  [ZipCode] char(6) NOT NULL,
+  [Place] varchar(255) NOT NULL,
+  [AddressNote] varchar(1023) NOT NULL,
+  [PasswordHash] varchar(255) NOT NULL,
+  [PasswordSalt] varchar(48) NOT NULL,
 )
 GO
 
 CREATE TABLE [Fines] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [BookID] int,
-  [MemberID] int,
-  [Price] decimal
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [BookID] int NOT NULL,
+  [MemberID] int NOT NULL,
+  [Price] decimal NOT NULL,
 )
 GO
 
 CREATE TABLE [Reservations] (
-  [ID] int PRIMARY KEY IDENTITY(1, 1),
-  [BookID] int,
-  [MemberID] int,
-  [LibraryID] int,
-  [StartDate] date,
-  [ReturnDate] date
+  [ID] int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+  [BookID] int NOT NULL,
+  [MemberID] int NOT NULL,
+  [LibraryID] int NOT NULL,
+  [StartDate] date NOT NULL,
+  [ReturnDate] date NOT NULL,
 )
 GO
 
 
-ALTER TABLE [Memberships] ADD FOREIGN KEY ([MemberID]) REFERENCES [Members] ([ID])
+ALTER TABLE [Memberships] ADD FOREIGN KEY ([MemberID]) REFERENCES [Members] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Editions] ADD FOREIGN KEY ([LanguageID]) REFERENCES [Languages] ([ID])
+ALTER TABLE [Editions] ADD FOREIGN KEY ([LanguageID]) REFERENCES [Languages] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [EditionAuthors] ADD FOREIGN KEY ([EditionD]) REFERENCES [Editions] ([ID])
+ALTER TABLE [EditionAuthors] ADD FOREIGN KEY ([EditionD]) REFERENCES [Editions] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [EditionAuthors] ADD FOREIGN KEY ([AuthorID]) REFERENCES [Authors] ([ID])
+ALTER TABLE [EditionAuthors] ADD FOREIGN KEY ([AuthorID]) REFERENCES [Authors] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [EditionGenres] ADD FOREIGN KEY ([EditionID]) REFERENCES [Editions] ([ID])
+ALTER TABLE [EditionGenres] ADD FOREIGN KEY ([EditionID]) REFERENCES [Editions] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [EditionGenres] ADD FOREIGN KEY ([GenreID]) REFERENCES [Genres] ([ID])
+ALTER TABLE [EditionGenres] ADD FOREIGN KEY ([GenreID]) REFERENCES [Genres] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [EditionPublishers] ADD FOREIGN KEY ([EditionID]) REFERENCES [Editions] ([ID])
+ALTER TABLE [EditionPublishers] ADD FOREIGN KEY ([EditionID]) REFERENCES [Editions] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [EditionPublishers] ADD FOREIGN KEY ([PublisherID]) REFERENCES [Publishers] ([ID])
+ALTER TABLE [EditionPublishers] ADD FOREIGN KEY ([PublisherID]) REFERENCES [Publishers] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Books] ADD FOREIGN KEY ([EditionID]) REFERENCES [Editions] ([ID])
+ALTER TABLE [Books] ADD FOREIGN KEY ([EditionID]) REFERENCES [Editions] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [LibraryBooks] ADD FOREIGN KEY ([BookID]) REFERENCES [Books] ([ID])
+ALTER TABLE [LibraryBooks] ADD FOREIGN KEY ([BookID]) REFERENCES [Books] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [LibraryBooks] ADD FOREIGN KEY ([LibraryID]) REFERENCES [Libraries] ([ID])
+ALTER TABLE [LibraryBooks] ADD FOREIGN KEY ([LibraryID]) REFERENCES [Libraries] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Employees] ADD FOREIGN KEY ([LibraryID]) REFERENCES [Libraries] ([ID])
+ALTER TABLE [Employees] ADD FOREIGN KEY ([LibraryID]) REFERENCES [Libraries] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Fines] ADD FOREIGN KEY ([BookID]) REFERENCES [Books] ([ID])
+ALTER TABLE [Fines] ADD FOREIGN KEY ([BookID]) REFERENCES [Books] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Fines] ADD FOREIGN KEY ([MemberID]) REFERENCES [Members] ([ID])
+ALTER TABLE [Fines] ADD FOREIGN KEY ([MemberID]) REFERENCES [Members] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Reservations] ADD FOREIGN KEY ([BookID]) REFERENCES [Books] ([ID])
+ALTER TABLE [Reservations] ADD FOREIGN KEY ([BookID]) REFERENCES [Books] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Reservations] ADD FOREIGN KEY ([MemberID]) REFERENCES [Members] ([ID])
+ALTER TABLE [Reservations] ADD FOREIGN KEY ([MemberID]) REFERENCES [Members] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [Reservations] ADD FOREIGN KEY ([LibraryID]) REFERENCES [Libraries] ([ID])
+ALTER TABLE [Reservations] ADD FOREIGN KEY ([LibraryID]) REFERENCES [Libraries] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
