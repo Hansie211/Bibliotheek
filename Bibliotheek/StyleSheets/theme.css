@@ -1,0 +1,44 @@
+﻿body {
+
+    font-family:Calibri;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#loginform {
+    position: absolute;
+    width: 500px;
+    height: 120px;
+    border: 1px solid black;
+    border-radius: 5px;
+    left: 50%;
+    margin-left:-250px;
+    top: 50%;
+    margin-top: -60px;
+
+    background-color:#CCC;
+}
+
+#loginform table{
+    width: 100%;
+}
+
+#loginform table td {
+
+    padding: 5px 3px;
+}
+
+#loginform input{
+
+    width: 100%;
+}
+
+#loginform input[type=submit]{
+
+    height: 30px;
+    width: 75px;
+
+    float: right;
+}

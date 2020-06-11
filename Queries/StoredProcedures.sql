@@ -359,37 +359,37 @@ GO
 
 
 CREATE OR ALTER PROCEDURE CreateMember
-@MemberFirstName varchar(255), @MemberAffix varchar(255), @MemberLastName varchar(255), @MemberBirthDate date, @MemberEmailAddress varchar(255), @MemberTelephone varchar(255), @MemberStreet varchar(255), @MemberNumber int, @MemberNumberSuffix varchar(255), @MemberZipCode char, @MemberPlace varchar(255), @MemberAddressNote varchar(1023), @MemberID int OUTPUT
+@MemberFirstName varchar(255), @MemberAffix varchar(255), @MemberLastName varchar(255), @MemberBirthDate date, @MemberEmailAddress varchar(255), @MemberTelephone varchar(255), @MemberStreet varchar(255), @MemberNumber int, @MemberNumberSuffix varchar(255), @MemberZipCode char, @MemberPlace varchar(255), @MemberAddressNote varchar(1023), @MemberPasswordHash varchar(255), @MemberPasswordSalt varchar(48), @MemberID int OUTPUT
 AS
-INSERT INTO Members ( FirstName, Affix, LastName, BirthDate, EmailAddress, Telephone, Street, Number, NumberSuffix, ZipCode, Place, AddressNote )
-VALUES ( @MemberFirstName, @MemberAffix, @MemberLastName, @MemberBirthDate, @MemberEmailAddress, @MemberTelephone, @MemberStreet, @MemberNumber, @MemberNumberSuffix, @MemberZipCode, @MemberPlace, @MemberAddressNote)
+INSERT INTO Members ( FirstName, Affix, LastName, BirthDate, EmailAddress, Telephone, Street, Number, NumberSuffix, ZipCode, Place, AddressNote, PasswordHash, PasswordSalt )
+VALUES ( @MemberFirstName, @MemberAffix, @MemberLastName, @MemberBirthDate, @MemberEmailAddress, @MemberTelephone, @MemberStreet, @MemberNumber, @MemberNumberSuffix, @MemberZipCode, @MemberPlace, @MemberAddressNote, @MemberPasswordHash, @MemberPasswordSalt)
 SET @MemberID = SCOPE_IDENTITY()
 RETURN  @MemberID
 GO
 
 CREATE OR ALTER PROCEDURE GetMember
-@MemberID int, @MemberFirstName varchar(255) OUTPUT, @MemberAffix varchar(255) OUTPUT, @MemberLastName varchar(255) OUTPUT, @MemberBirthDate date OUTPUT, @MemberEmailAddress varchar(255) OUTPUT, @MemberTelephone varchar(255) OUTPUT, @MemberStreet varchar(255) OUTPUT, @MemberNumber int OUTPUT, @MemberNumberSuffix varchar(255) OUTPUT, @MemberZipCode char OUTPUT, @MemberPlace varchar(255) OUTPUT, @MemberAddressNote varchar(1023) OUTPUT
+@MemberID int, @MemberFirstName varchar(255) OUTPUT, @MemberAffix varchar(255) OUTPUT, @MemberLastName varchar(255) OUTPUT, @MemberBirthDate date OUTPUT, @MemberEmailAddress varchar(255) OUTPUT, @MemberTelephone varchar(255) OUTPUT, @MemberStreet varchar(255) OUTPUT, @MemberNumber int OUTPUT, @MemberNumberSuffix varchar(255) OUTPUT, @MemberZipCode char OUTPUT, @MemberPlace varchar(255) OUTPUT, @MemberAddressNote varchar(1023) OUTPUT, @MemberPasswordHash varchar(255) OUTPUT, @MemberPasswordSalt varchar(48) OUTPUT
 AS
 SELECT TOP 1
-@MemberFirstName = Members.FirstName, @MemberAffix = Members.Affix, @MemberLastName = Members.LastName, @MemberBirthDate = Members.BirthDate, @MemberEmailAddress = Members.EmailAddress, @MemberTelephone = Members.Telephone, @MemberStreet = Members.Street, @MemberNumber = Members.Number, @MemberNumberSuffix = Members.NumberSuffix, @MemberZipCode = Members.ZipCode, @MemberPlace = Members.Place, @MemberAddressNote = Members.AddressNote
+@MemberFirstName = Members.FirstName, @MemberAffix = Members.Affix, @MemberLastName = Members.LastName, @MemberBirthDate = Members.BirthDate, @MemberEmailAddress = Members.EmailAddress, @MemberTelephone = Members.Telephone, @MemberStreet = Members.Street, @MemberNumber = Members.Number, @MemberNumberSuffix = Members.NumberSuffix, @MemberZipCode = Members.ZipCode, @MemberPlace = Members.Place, @MemberAddressNote = Members.AddressNote, @MemberPasswordHash = Members.PasswordHash, @MemberPasswordSalt = Members.PasswordSalt
 FROM Members
 WHERE
 (@MemberID = Members.ID)
 GO
 
 CREATE OR ALTER PROCEDURE GetAllMember
-@MemberID int OUTPUT, @MemberFirstName varchar(255) OUTPUT, @MemberAffix varchar(255) OUTPUT, @MemberLastName varchar(255) OUTPUT, @MemberBirthDate date OUTPUT, @MemberEmailAddress varchar(255) OUTPUT, @MemberTelephone varchar(255) OUTPUT, @MemberStreet varchar(255) OUTPUT, @MemberNumber int OUTPUT, @MemberNumberSuffix varchar(255) OUTPUT, @MemberZipCode char OUTPUT, @MemberPlace varchar(255) OUTPUT, @MemberAddressNote varchar(1023) OUTPUT
+@MemberID int OUTPUT, @MemberFirstName varchar(255) OUTPUT, @MemberAffix varchar(255) OUTPUT, @MemberLastName varchar(255) OUTPUT, @MemberBirthDate date OUTPUT, @MemberEmailAddress varchar(255) OUTPUT, @MemberTelephone varchar(255) OUTPUT, @MemberStreet varchar(255) OUTPUT, @MemberNumber int OUTPUT, @MemberNumberSuffix varchar(255) OUTPUT, @MemberZipCode char OUTPUT, @MemberPlace varchar(255) OUTPUT, @MemberAddressNote varchar(1023) OUTPUT, @MemberPasswordHash varchar(255) OUTPUT, @MemberPasswordSalt varchar(48) OUTPUT
 AS
 SELECT
-@MemberID = Members.ID, @MemberFirstName = Members.FirstName, @MemberAffix = Members.Affix, @MemberLastName = Members.LastName, @MemberBirthDate = Members.BirthDate, @MemberEmailAddress = Members.EmailAddress, @MemberTelephone = Members.Telephone, @MemberStreet = Members.Street, @MemberNumber = Members.Number, @MemberNumberSuffix = Members.NumberSuffix, @MemberZipCode = Members.ZipCode, @MemberPlace = Members.Place, @MemberAddressNote = Members.AddressNote
+@MemberID = Members.ID, @MemberFirstName = Members.FirstName, @MemberAffix = Members.Affix, @MemberLastName = Members.LastName, @MemberBirthDate = Members.BirthDate, @MemberEmailAddress = Members.EmailAddress, @MemberTelephone = Members.Telephone, @MemberStreet = Members.Street, @MemberNumber = Members.Number, @MemberNumberSuffix = Members.NumberSuffix, @MemberZipCode = Members.ZipCode, @MemberPlace = Members.Place, @MemberAddressNote = Members.AddressNote, @MemberPasswordHash = Members.PasswordHash, @MemberPasswordSalt = Members.PasswordSalt
 FROM Members
 GO
 
 CREATE OR ALTER PROCEDURE UpdateMember
-@MemberFirstName varchar(255), @MemberAffix varchar(255), @MemberLastName varchar(255), @MemberBirthDate date, @MemberEmailAddress varchar(255), @MemberTelephone varchar(255), @MemberStreet varchar(255), @MemberNumber int, @MemberNumberSuffix varchar(255), @MemberZipCode char, @MemberPlace varchar(255), @MemberAddressNote varchar(1023), @MemberID int
+@MemberFirstName varchar(255), @MemberAffix varchar(255), @MemberLastName varchar(255), @MemberBirthDate date, @MemberEmailAddress varchar(255), @MemberTelephone varchar(255), @MemberStreet varchar(255), @MemberNumber int, @MemberNumberSuffix varchar(255), @MemberZipCode char, @MemberPlace varchar(255), @MemberAddressNote varchar(1023), @MemberPasswordHash varchar(255), @MemberPasswordSalt varchar(48), @MemberID int
 AS
 UPDATE Members SET
-FirstName = @MemberFirstName, Affix = @MemberAffix, LastName = @MemberLastName, BirthDate = @MemberBirthDate, EmailAddress = @MemberEmailAddress, Telephone = @MemberTelephone, Street = @MemberStreet, Number = @MemberNumber, NumberSuffix = @MemberNumberSuffix, ZipCode = @MemberZipCode, Place = @MemberPlace, AddressNote = @MemberAddressNote
+FirstName = @MemberFirstName, Affix = @MemberAffix, LastName = @MemberLastName, BirthDate = @MemberBirthDate, EmailAddress = @MemberEmailAddress, Telephone = @MemberTelephone, Street = @MemberStreet, Number = @MemberNumber, NumberSuffix = @MemberNumberSuffix, ZipCode = @MemberZipCode, Place = @MemberPlace, AddressNote = @MemberAddressNote, PasswordHash = @MemberPasswordHash, PasswordSalt = @MemberPasswordSalt
 WHERE ID = @MemberID
 GO
 

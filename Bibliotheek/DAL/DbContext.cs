@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Web;
 using System.Web.DynamicData;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Bibliotheek.DAL {
 
@@ -59,31 +61,33 @@ namespace Bibliotheek.DAL {
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "CreateMember";
 
-            GetFieldAttribute<Member>( o => o.AddressNote );
-
             // Add the parameters
-            command.Parameters.AddWithValue( "@FirstName", member.FirstName );
-            command.Parameters.AddWithValue( "@Affix", member.Affix );
-            command.Parameters.AddWithValue( "@LastName", member.LastName );
-            command.Parameters.AddWithValue( "@BirthDate", member.BirthDate );
-            command.Parameters.AddWithValue( "@EmailAddress", member.EmailAddress );
-            command.Parameters.AddWithValue( "@Telephone", member.Telephone );
-            command.Parameters.AddWithValue( "@Street", member.Street );
-            command.Parameters.AddWithValue( "@Number", member.Number );
-            command.Parameters.AddWithValue( "@NumberSuffix", member.NumberSuffix );
-            command.Parameters.AddWithValue( "@ZipCode", member.ZipCode );
-            command.Parameters.AddWithValue( "@Place", member.Place );
-            command.Parameters.AddWithValue( "@AddressNote", member.AddressNote );
+            command.Parameters.AddWithValue<Member>( member, o => o.FirstName );
+            command.Parameters.AddWithValue<Member>( member, o => o.Affix );
+            command.Parameters.AddWithValue<Member>( member, o => o.LastName );
+            command.Parameters.AddWithValue<Member>( member, o => o.BirthDate );
+            command.Parameters.AddWithValue<Member>( member, o => o.EmailAddress );
+            command.Parameters.AddWithValue<Member>( member, o => o.Telephone );
+            command.Parameters.AddWithValue<Member>( member, o => o.Street );
+            command.Parameters.AddWithValue<Member>( member, o => o.Number );
+            command.Parameters.AddWithValue<Member>( member, o => o.NumberSuffix );
+            command.Parameters.AddWithValue<Member>( member, o => o.ZipCode );
+            command.Parameters.AddWithValue<Member>( member, o => o.Place );
+            command.Parameters.AddWithValue<Member>( member, o => o.AddressNote );
+            command.Parameters.AddWithValue<Member>( member, o => o.PasswordHash );
+
+            var saltParam = command.Parameters.Add<Member>( o => o.PasswordSalt );
+            saltParam.Value = Convert.ToBase64String( member.PasswordSalt );
 
             // Add the return value
-            command.Parameters.Add( "@ID", SqlDbType.Int ).Direction = ParameterDirection.Output;
+            command.Parameters.Add<Member>( o => o.ID, ParameterDirection.Output );
 
             Debug.WriteLine( $"Execute '{command.CommandText}'." );
 
             try {
 
                 command.ExecuteNonQuery();
-                member.ID = (int)command.Parameters[ "@id" ].Value;
+                member.ID = (int)command.Parameters[ "@MemberID" ].Value;
             } catch ( Exception exp ) {
 
                 Debug.WriteLine( "!!ERROR!!" );

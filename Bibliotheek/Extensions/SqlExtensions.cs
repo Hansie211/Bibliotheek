@@ -23,7 +23,7 @@ namespace Bibliotheek.Extensions {
             return memberExpression.Member as PropertyInfo;
         }
 
-        private static FieldAttribute GetFieldAttribute<T>( PropertyInfo prop ) {
+        private static FieldAttribute GetFieldAttribute( PropertyInfo prop ) {
 
             IEnumerable<FieldAttribute> attrs = prop.GetCustomAttributes<FieldAttribute>( true );
             return attrs.FirstOrDefault();
@@ -31,7 +31,7 @@ namespace Bibliotheek.Extensions {
 
         private static FieldAttribute GetFieldAttribute<T>( Expression<Func<T, object>> expr ) {
 
-            return GetFieldAttribute<T>( GetPropertyInfo( expr ) );
+            return GetFieldAttribute( GetPropertyInfo( expr ) );
         }
 
         private static string GetParameterName<T>( string fieldName ) {
@@ -39,11 +39,28 @@ namespace Bibliotheek.Extensions {
             return $"@{ typeof( T ).Name }{ fieldName }";
         }
 
-        public static void Add<TClass>( this SqlParameterCollection collection, Expression<Func<TClass, object>> expr, ParameterDirection direction = ParameterDirection.Input ) where TClass : class {
+        public static SqlParameter Add<TClass>( this SqlParameterCollection collection, Expression<Func<TClass, object>> expr, ParameterDirection direction = ParameterDirection.Input ) where TClass : class {
 
             FieldAttribute attribute = GetFieldAttribute( expr );
 
-            collection.Add( GetParameterName<TClass>( attribute.FieldName ), attribute.DbType, attribute.Size ).Direction = direction;
+            var param = collection.Add( GetParameterName<TClass>( attribute.FieldName ), attribute.DbType, attribute.Size );
+            param.Direction = direction;
+
+            return param;
+        }
+
+        public static SqlParameter AddWithValue<TClass>( this SqlParameterCollection collection, TClass obj, Expression<Func<TClass, object>> expr, ParameterDirection direction = ParameterDirection.Input ) where TClass : class {
+
+            PropertyInfo prop           = GetPropertyInfo( expr );
+            FieldAttribute attribute    = GetFieldAttribute( prop );
+
+            object value = prop.GetValue( obj );
+
+            var param = collection.Add( GetParameterName<TClass>( attribute.FieldName ), attribute.DbType, attribute.Size );
+            param.Direction = direction;
+            param.Value = value;
+
+            return param;
         }
 
         public static void StoreReturnValue<TClass>( this SqlParameterCollection collection, TClass obj, Expression<Func<TClass, object>> expression ) {

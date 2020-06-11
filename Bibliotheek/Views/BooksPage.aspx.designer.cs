@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Bibliotheek {
+namespace Bibliotheek.Views {
 
 
-    public partial class HomePage {
+    public partial class BooksPage {
 
         /// <summary>
         /// form1 control.

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HomePage.aspx.cs" Inherits="Bibliotheek.HomePage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BooksPage.aspx.cs" Inherits="Bibliotheek.Views.BooksPage" %>
 
 <!DOCTYPE html>
 

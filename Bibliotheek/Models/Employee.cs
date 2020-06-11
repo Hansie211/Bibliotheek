@@ -10,7 +10,7 @@ using System.Web.DynamicData;
 namespace Bibliotheek.Models {
 
     [TableName( "Employees" )]
-    public class Employee : DatabaseRecord, IAddress, IPerson {
+    public class Employee : DatabaseRecord, IAddress, IPerson, IPasswordHolder {
 
         [ForeignKey( "LibraryID" )]
         public Library Library { get; set; }

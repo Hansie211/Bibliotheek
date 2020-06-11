@@ -10,7 +10,7 @@ using System.Web.DynamicData;
 namespace Bibliotheek.Models {
 
     [TableName( "Members" )]
-    public class Member : DatabaseRecord, IAddress, IPerson {
+    public class Member : DatabaseRecord, IAddress, IPerson, IPasswordHolder {
 
         [Field( "FirstName", SqlDbType.VarChar )]
         public string FirstName { get; set; }
@@ -38,6 +38,12 @@ namespace Bibliotheek.Models {
         public string Place { get; set; }
         [Field( "AddressNote", SqlDbType.VarChar, 1023 )]
         public string AddressNote { get; set; }
+
+        [Field( "PasswordHash", SqlDbType.VarChar )]
+        public string PasswordHash { get; set; }
+        [Field( "PasswordSalt", SqlDbType.VarChar, 48 )]
+        public byte[] PasswordSalt { get; set; }
+
 
         public Member() {
 
